@@ -5,9 +5,14 @@ const AssetsBox = () => {
     const{ categories, currentCategory, fetchCategories, setCurrentCategory} = 
         useConfiguratorStore();
 
-    useEffect(() => {
-        fetchCategories();
-    }, []);
+        useEffect(() => {
+            fetchCategories();
+        }, [fetchCategories]);
+
+    if (!categories || categories.length === 0) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="rounded-full border-purple-700 border-solid border-2 drop-shadow-md p-6 gap-6 flex flex-col">
             <div className="flex items-center gap-6 pointer-events-auto">
@@ -24,6 +29,17 @@ const AssetsBox = () => {
                   {category.name}
               </button>  
           ))}
+            </div>
+            <div className="flex gap-2 flex-wrap">
+                 {currentCategory && currentCategory.assets && currentCategory.assets.map((asset, index) => (
+                    <button key={index}
+                     className="w-20 h-20 rounded-md overflow-hidden bg-gray-200 pointer-events-auto hover:opacity-100 transition-all border-2 duration-500">
+                        <img src={pb.files.getUrl()} 
+                        alt={asset.name} 
+                        className="w-full h-full object-cover"
+                        />
+                    </button>
+                ))}
             </div>
         </div>
     );
